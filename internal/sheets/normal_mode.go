@@ -345,11 +345,40 @@ func (m *model) handlePendingGoto(msg tea.KeyMsg) bool {
 		if ref, ok := parseCellRef(m.gotoBuffer); ok {
 			m.goToCell(ref.row, ref.col)
 		}
+		m.autoSelectGoto()
 		return true
 	default:
 		m.clearGotoCellCommand()
 		m.clearRegisterState()
 		return false
+	}
+}
+
+func (m *model) autoSelectGoto() {
+	if m.gotoBuffer == "" || !m.gotoPending {
+		return
+	}
+	var matchRow, matchCol, count int
+	for i := 0; i < m.visibleRows(); i++ {
+		row := m.rowOffset + i
+		for j := 0; j < m.visibleCols(); j++ {
+			col := m.colOffset + j
+			ref := strings.ToUpper(cellRef(row, col))
+			if strings.HasPrefix(ref, m.gotoBuffer) {
+				matchRow = row
+				matchCol = col
+				count++
+				if count > 1 {
+					return
+				}
+			}
+		}
+	}
+	if count == 1 {
+		m.recordJumpFromCurrent()
+		m.goToCell(matchRow, matchCol)
+		m.clearGotoCellCommand()
+		m.clearRegisterState()
 	}
 }
 
