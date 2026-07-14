@@ -4,7 +4,7 @@ Spreadsheets in your terminal.
 
 <br />
 <p align="center">
-<img width="800" src="./examples/demo.gif?raw=true" alt="Sheets" />
+  <img width="750" height="600" alt="demo" src="https://github.com/user-attachments/assets/6531c666-34dd-4616-b341-e0ac9c54ec7c" />
 </p>
 <br />
 
@@ -84,8 +84,8 @@ Modify a cell:
 Press <kbd>:</kbd> to open the command prompt, then use commands such as:
 
 - <kbd>:w</kbd> to save
-- <kbd>:w</kbd> <code>path.csv</code> to save to a new file
-- <kbd>:e</kbd> <code>path.csv</code> to open another CSV
+- <kbd>:w path.csv</kbd> to save to a new file
+- <kbd>:e path.csv</kbd> to open another CSV
 - <kbd>:q</kbd> or <kbd>:wq</kbd> to quit
 - <kbd>:goto B9</kbd> or <kbd>:B9</kbd> to jump to a cell
 
@@ -206,24 +206,13 @@ Each section maps a key to an action name. Only specify the bindings you want to
 
 ## Installation
 
-<!--
+Install with Homebrew on macOS or Linux:
 
-Use a package manager:
-
-```bash
-# macOS
+```sh
 brew install sheets
-
-# Arch
-yay -S sheets
-
-# Nix
-nix-env -iA nixpkgs.sheets
 ```
 
--->
-
-Install with Go:
+Or install with Go:
 
 ```sh
 go install github.com/maaslalani/sheets@main

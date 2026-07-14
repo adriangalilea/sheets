@@ -123,7 +123,7 @@ func newModel() model {
 			Background(statusGray).
 			Foreground(statusAccent),
 		statusNormalStyle: lipgloss.NewStyle().
-			Background(lipgloss.Color("33")).
+			Background(lipgloss.Color("5")).
 			Foreground(white).
 			Padding(0, 1),
 		statusInsertStyle: lipgloss.NewStyle().
@@ -142,6 +142,10 @@ func newModel() model {
 }
 
 func (m *model) loadCSVFile(path string) error {
+	if isMarkdownPath(path) {
+		return m.loadMarkdownFile(path)
+	}
+
 	file, err := os.Open(path)
 	if err != nil {
 		return err
@@ -218,6 +222,7 @@ func (m *model) loadCSV(records [][]string) error {
 	m.insertKeys = nil
 	m.recordingInsert = false
 	m.replayingChange = false
+	m.dirtyFile = false
 
 	for row := 0; row < len(records) && row < maxRows; row++ {
 		record := records[row]
@@ -270,6 +275,10 @@ func (m model) writeCSV(writer *csv.Writer) error {
 }
 
 func (m model) writeCSVFile(path string) error {
+	if isMarkdownPath(path) {
+		return m.writeMarkdownFile(path)
+	}
+
 	file, err := os.Create(path)
 	if err != nil {
 		return err
@@ -418,6 +427,7 @@ func isEscapeKey(msg tea.KeyMsg) bool {
 func (m *model) pushUndoState() {
 	m.undoStack = append(m.undoStack, m.snapshotUndoState())
 	m.redoStack = nil
+	m.dirtyFile = true
 }
 
 func (m *model) undoLastOperation() {
