@@ -382,7 +382,8 @@ func (m *model) autoSelectGoto() {
 	if count == 1 {
 		m.recordJumpFromCurrent()
 		m.goToCell(matchRow, matchCol)
-		m.clearGotoCellCommand()
+		// stay pending: the overlay keeps showing the buffer and the next
+		// non-ref key (v, escape, …) exits goto and acts normally
 		m.clearRegisterState()
 	}
 }
